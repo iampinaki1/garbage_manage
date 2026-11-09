@@ -1,0 +1,84 @@
+{
+  "model_name": "mobilenet_v3_small",
+  "total_epochs_trained": 8,
+  "best_epoch": 8,
+  "best_val_loss": 0.2971,
+  "best_val_accuracy": 0.9004,
+  "total_training_time_sec": 1194.8,
+  "device": "cuda",
+  "checkpoint_file": "waste_classifier.pth",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.1129,
+      "train_acc": 0.6283,
+      "val_loss": 0.6966,
+      "val_acc": 0.764,
+      "learning_rate": 0.0002886199901104373,
+      "epoch_duration_sec": 125.39
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.5812,
+      "train_acc": 0.8009,
+      "val_loss": 0.4939,
+      "val_acc": 0.8308,
+      "learning_rate": 0.0002562124637873888,
+      "epoch_duration_sec": 125.62
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.4065,
+      "train_acc": 0.8556,
+      "val_loss": 0.3743,
+      "val_acc": 0.8718,
+      "learning_rate": 0.00020771117313858086,
+      "epoch_duration_sec": 77.2
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.3272,
+      "train_acc": 0.8807,
+      "val_loss": 0.3454,
+      "val_acc": 0.884,
+      "learning_rate": 0.00015049999999999994,
+      "epoch_duration_sec": 74.55
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.2573,
+      "train_acc": 0.9121,
+      "val_loss": 0.3253,
+      "val_acc": 0.8827,
+      "learning_rate": 9.328882686141905e-05,
+      "epoch_duration_sec": 112.35
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.183,
+      "train_acc": 0.9365,
+      "val_loss": 0.3184,
+      "val_acc": 0.9018,
+      "learning_rate": 4.4787536212611134e-05,
+      "epoch_duration_sec": 119.36
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.1548,
+      "train_acc": 0.9449,
+      "val_loss": 0.3013,
+      "val_acc": 0.9004,
+      "learning_rate": 1.238000988956263e-05,
+      "epoch_duration_sec": 121.66
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.136,
+      "train_acc": 0.9538,
+      "val_loss": 0.2971,
+      "val_acc": 0.9004,
+      "learning_rate": 1e-06,
+      "epoch_duration_sec": 438.28
+    }
+  ]
+}
