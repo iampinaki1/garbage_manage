@@ -1,0 +1,56 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python byte-code and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables & secrets
+.env
+.env.local
+*.secret
+
+# Machine Learning model weights (heavy binaries)
+trained_models/**/*.pt
+trained_models/**/*.pth
+trained_models/**/*.onnx
+runs/
+yolo_runs/
+*.log
+
+# Large Datasets
+datasets/trashnet/*
+!datasets/trashnet/.gitkeep
+datasets/realwaste/*
+!datasets/realwaste/.gitkeep
+datasets/taco/*
+!datasets/taco/.gitkeep
+datasets/processed/*
+!datasets/processed/.gitkeep
+
+# Uploads and temporary generated output images
+backend/static/uploads/*
+!backend/static/uploads/.gitkeep
+backend/static/annotated/*
+!backend/static/annotated/.gitkeep
+
+# Node.js and Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
