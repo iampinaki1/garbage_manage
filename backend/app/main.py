@@ -61,6 +61,9 @@ app.mount("/static", StaticFiles(directory=str(settings.STATIC_DIR)), name="stat
 # Mount built React frontend if available
 if settings.FRONTEND_DIST.exists():
     app.mount("/ui", StaticFiles(directory=str(settings.FRONTEND_DIST), html=True), name="ui")
+    assets_dir = settings.FRONTEND_DIST / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
 
 # 3. Include API Routers under /api
 app.include_router(api_router, prefix=settings.API_V1_STR)
