@@ -253,22 +253,23 @@ class RecyclingRecommendationEngine:
     def _find_best_match(self, category: str, query_item: Optional[str]) -> Dict[str, Any]:
         """Matches a query string to a database record or returns category fallback."""
         items = self.category_index.get(category, [])
-        if not items:
-            # Fallback for unrecognized categories
+        if not items or category == "uncertain":
+            # Fallback for unrecognized categories or low-confidence / uncertain predictions
+            is_unc = (category == "uncertain")
             return {
-                "object_name": category.replace("_", " ").title(),
-                "material": "Mixed or Unspecified Material",
+                "object_name": "Uncertain / Unclassified Item" if is_unc else category.replace("_", " ").title(),
+                "material": "Mixed or Unverified Material",
                 "waste_category": category,
                 "recyclable": "false",
-                "recommended_bin": "Black Bin (General Waste)",
-                "recycling_method": "Municipal solid waste handling",
-                "preparation_instructions": "Inspect item for recycling identification symbols.",
-                "disposal_instructions": "Check with local municipal recycling guidelines.",
-                "contamination_risk": "medium",
-                "contamination_notes": "Unclassified materials should not contaminate standard recycling streams.",
+                "recommended_bin": "Black Bin (General Waste) / Specialized Sorting",
+                "recycling_method": "Precautionary non-recyclable municipal handling or physical depot inspection",
+                "preparation_instructions": "Inspect item for recycling identification symbols (#1-7) or municipal markings.",
+                "disposal_instructions": "Item could not be identified with statistical confidence. Check local municipal guidelines before placing in recycling." if is_unc else "Check with local municipal recycling guidelines.",
+                "contamination_risk": "high" if is_unc else "medium",
+                "contamination_notes": "Unverified materials risk contaminating clean recyclables.",
                 "co2_saved_kg_per_kg": 0.0,
                 "energy_saved_kwh_per_kg": 0.0,
-                "reference_source": "General Municipal Solid Waste Guidelines"
+                "reference_source": "Zero-Contamination Precautionary Principle"
             }
 
         if query_item:

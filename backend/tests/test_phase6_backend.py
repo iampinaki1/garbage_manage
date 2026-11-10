@@ -127,7 +127,11 @@ def test_analyze_endpoint_with_valid_image():
     assert len(res.detections) >= 1
     
     first_det = res.detections[0]
-    assert first_det.category in ["organic_waste", "paper_waste", "plastic_waste", "metal_waste", "glass_waste", "electronic_waste", "hazardous_waste", "textile_waste", "residual_waste"]
+    assert first_det.category in [
+        "organic_waste", "paper_waste", "plastic_waste", "metal_waste",
+        "glass_waste", "electronic_waste", "hazardous_waste", "textile_waste",
+        "residual_waste", "uncertain"
+    ]
     assert first_det.recommended_bin is not None
     assert first_det.environmental_impact is not None
     assert res.annotated_image_url.startswith("/static/annotated/")

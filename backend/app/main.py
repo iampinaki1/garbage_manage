@@ -58,6 +58,10 @@ app.add_middleware(
 # 2. Static File Mount for uploaded and annotated images
 app.mount("/static", StaticFiles(directory=str(settings.STATIC_DIR)), name="static")
 
+# Mount built React frontend if available
+if settings.FRONTEND_DIST.exists():
+    app.mount("/ui", StaticFiles(directory=str(settings.FRONTEND_DIST), html=True), name="ui")
+
 # 3. Include API Routers under /api
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -107,7 +111,8 @@ async def root():
             "analytics": f"{settings.API_V1_STR}/analytics",
             "health": f"{settings.API_V1_STR}/health",
             "auth_register": f"{settings.API_V1_STR}/auth/register",
-            "auth_login": f"{settings.API_V1_STR}/auth/login"
+            "auth_login": f"{settings.API_V1_STR}/auth/login",
+            "ui": "/ui" if settings.FRONTEND_DIST.exists() else None
         }
     }
 

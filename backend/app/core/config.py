@@ -24,6 +24,8 @@ class Settings:
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "waste_segregation_db")
     
     # Paths & Static Storage
+    ROOT_DIR: Path = ROOT
+    FRONTEND_DIST: Path = ROOT / "frontend" / "dist"
     STATIC_DIR: Path = ROOT / "backend" / "static"
     ANNOTATED_DIR: Path = ROOT / "backend" / "static" / "annotated"
     UPLOADS_DIR: Path = ROOT / "backend" / "static" / "uploads"

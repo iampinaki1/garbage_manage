@@ -142,6 +142,11 @@ class PipelineService:
                     except Exception as err:
                         logger.warning(f"Crop classification fallback: {err}")
 
+                # If confidence is below statistical threshold, preserve uncertain state
+                if conf < 0.20:
+                    cat = "uncertain"
+                    matched_label = "Uncertain / Low Confidence Object"
+
                 # Query Recommendation Engine
                 rec = self._recommendation_engine.get_recommendation(
                     category=cat,
@@ -182,11 +187,13 @@ class PipelineService:
             # Fallback: No bounding boxes found by YOLO -> Run Model A on the entire image
             cls_res = self.classifier.predict(pil_img)
             cat = cls_res["category"]
-            if cat == "uncertain":
-                probs = cls_res.get("all_probabilities", {})
-                cat = max(probs, key=probs.get) if probs else "residual_waste"
             conf = float(cls_res["confidence"])
             matched_label = cls_res.get("category_name", cat)
+            
+            # If classifier determined confidence is below threshold, preserve uncertain state
+            if cat == "uncertain" or not cls_res.get("is_confident", True):
+                cat = "uncertain"
+                matched_label = "Uncertain / Unclassified Item"
             
             rec = self._recommendation_engine.get_recommendation(
                 category=cat,
@@ -233,10 +240,12 @@ class PipelineService:
         conditional_count = sum(1 for d in detections if d.is_conditional)
         total_items = len(detections)
         
-        if recyclable_count == total_items:
+        if recyclable_count == total_items and recyclable_count > 0:
             overall_status = "Recyclable"
         elif recyclable_count > 0 or conditional_count > 0:
             overall_status = "Partially Recyclable"
+        elif any(d.category == "uncertain" for d in detections):
+            overall_status = "Uncertain / Requires Inspection"
         else:
             overall_status = "Non-Recyclable"
 
