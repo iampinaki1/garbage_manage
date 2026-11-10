@@ -99,13 +99,12 @@ async def get_system_analytics():
             else:
                 non_recyclable_count += 1
 
-    # If database is fresh with under 5 records, supplement with base distribution for dashboard charts
     display_total_items = max(total_items, 1)
     
     category_distribution: List[CategoryBreakdown] = []
     for cat in CANONICAL_CATEGORIES:
         count = cat_counts[cat]
-        pct = round((count / display_total_items) * 100, 2) if total_items > 0 else round(BASELINE_CATEGORY_WEIGHTS.get(cat, 0.05) * 100, 2)
+        pct = round((count / display_total_items) * 100, 2) if total_items > 0 else 0.0
         category_distribution.append(
             CategoryBreakdown(
                 category=cat,
@@ -117,15 +116,15 @@ async def get_system_analytics():
             )
         )
         
-    recyclable_pct = round((recyclable_count / display_total_items) * 100, 2) if total_items > 0 else 68.5
+    recyclable_pct = round((recyclable_count / display_total_items) * 100, 2) if total_items > 0 else 0.0
 
     # EPA Equivalencies:
     # 1 urban tree absorbs ~21.77 kg CO2 per year
     # 1 kWh charges ~80 smartphones (approx 12.5 Wh per charge)
     # Average passenger vehicle produces ~0.404 kg CO2 per mile (US EPA)
-    tree_equiv = round(cumulative_co2 / 21.77, 2) if cumulative_co2 > 0 else round(display_total_items * 0.08, 2)
-    phone_equiv = round(cumulative_energy * 80.0, 1) if cumulative_energy > 0 else round(display_total_items * 24.5, 1)
-    miles_equiv = round(cumulative_co2 / 0.404, 2) if cumulative_co2 > 0 else round(display_total_items * 1.85, 2)
+    tree_equiv = round(cumulative_co2 / 21.77, 2) if cumulative_co2 > 0 else 0.0
+    phone_equiv = round(cumulative_energy * 80.0, 1) if cumulative_energy > 0 else 0.0
+    miles_equiv = round(cumulative_co2 / 0.404, 2) if cumulative_co2 > 0 else 0.0
 
     return AnalyticsResponse(
         total_analyses=total_analyses,

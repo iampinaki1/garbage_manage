@@ -12,6 +12,21 @@ logger = logging.getLogger(__name__)
 
 from backend.app.core.config import settings
 
+def _get_nested(doc: Dict[str, Any], key: str) -> Any:
+    """Traverses dotted keys (e.g. 'summary.primary_category') like MongoDB."""
+    if not isinstance(doc, dict):
+        return None
+    if key in doc:
+        return doc[key]
+    parts = key.split(".")
+    curr = doc
+    for p in parts:
+        if isinstance(curr, dict) and p in curr:
+            curr = curr[p]
+        else:
+            return None
+    return curr
+
 class InMemoryCursor:
     """Simulates Motor's AsyncIOMotorCursor for in-memory queries."""
     def __init__(self, items: List[Dict[str, Any]]):
@@ -23,7 +38,7 @@ class InMemoryCursor:
         else:
             key = key_or_list
         reverse = (direction == -1)
-        self._items.sort(key=lambda x: x.get(key, ""), reverse=reverse)
+        self._items.sort(key=lambda x: str(_get_nested(x, key) or ""), reverse=reverse)
         return self
 
     def skip(self, n: int):
@@ -70,7 +85,7 @@ class InMemoryCollection:
         for doc in self.documents:
             match = True
             for k, v in query.items():
-                if doc.get(k) != v:
+                if _get_nested(doc, k) != v:
                     match = False
                     break
             if match:
@@ -84,7 +99,7 @@ class InMemoryCollection:
         for doc in self.documents:
             match = True
             for k, v in query.items():
-                if doc.get(k) != v:
+                if _get_nested(doc, k) != v:
                     match = False
                     break
             if match:
